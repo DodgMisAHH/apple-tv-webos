@@ -1,0 +1,35 @@
+# Pairing credentials, host addresses and device inventory
+.lgtv-key.json
+.tv-host
+.sync-apps-icons.json
+app/apps.js
+app/user.js
+app/wall.js
+app/icons/
+app/bg.jpg
+app/bg-*.jpg
+app/wallpaper.jpg
+
+# Private snapshots, keys, environment files and local experiments
+.local/
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+*.log
+
+# Restricted local fonts must never enter shared source
+app/fonts/
+
+# Build output and tool environments
+build/
+*.ipk
+venv/
+.venv/
+node_modules/
+__pycache__/
+*.py[cod]
+.DS_Store

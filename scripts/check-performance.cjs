@@ -1,0 +1,8 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const source=fs.readFileSync('app/performance.js','utf8');
+function setup(enabled){let time=0,id=0,frames=new Map(),events={},documentEvents={},observerCount=0;const scope={window:null,location:{search:enabled?'?profile=1':''},performance:{now:()=>time},document:{hidden:false,addEventListener(n,f){documentEvents[n]=f;},removeEventListener(n){delete documentEvents[n];}},requestAnimationFrame(f){frames.set(++id,f);return id;},cancelAnimationFrame(n){frames.delete(n);},addEventListener(n,f){events[n]=f;},removeEventListener(n){delete events[n];},PerformanceObserver:function(){observerCount++;this.observe=()=>{};this.disconnect=()=>{};}};scope.window=scope;vm.createContext(scope);vm.runInContext(source,scope);return {scope,events,documentEvents,frames,observers:()=>observerCount,frame(t){time=t;const pair=frames.entries().next().value;if(pair){frames.delete(pair[0]);pair[1](t);}}};}
+let s=setup(false);assert.equal(s.observers(),0);assert.equal(Object.keys(s.events).length,0);assert.equal(s.scope.LauncherPerf,undefined);
+s=setup(true);s.events.load();s.frame(16);s.frame(32);s.scope.document.hidden=true;s.documentEvents.visibilitychange();assert.equal(s.frames.size,0);
+s.scope.document.hidden=false;s.documentEvents.visibilitychange();s.frame(10000);assert.equal(s.scope.LauncherPerf.report().frames.max,16);
+s.scope.LauncherPerf.stop();assert.equal(Object.keys(s.events).length,0);assert.equal(Object.keys(s.documentEvents).length,0);assert.equal(s.frames.size,0);
+console.log('Profiling disabled by default, bounded frame samples, hidden-time exclusion and stop cleanup passed.');

@@ -1,0 +1,55 @@
+'use strict';
+const assert = require('assert');
+const {makeSession, validState, checkSource} = require('../tv/native-blur/bridge.js');
+const token = 'a'.repeat(64);
+let time = 100, changes = [], stops = [];
+const make = () => makeSession({token, deadline: 600000, now: () => time,
+  changed: state => changes.push(state), stopped: reason => stops.push(reason)});
+const state = (sequence, main = true, visible = true, selected = 0) => ({sequence, main, visible, selected});
+let s = make();
+time = 7000; assert(s.arm()); assert.equal(s.get().expiresAt,15000);
+assert(s.launched()); assert.equal(s.get().expiresAt,10500);
+assert.equal(s.accept(state(1)).status,200);
+time = 8000;
+assert.equal(s.accept(state(3,false,true,3)).status,200);
+const lease = s.get().expiresAt;
+assert.equal(s.accept(state(2)).status,409);
+assert.equal(s.accept(state(3)).status,409);
+assert.equal(s.get().expiresAt,lease); assert.equal(s.get().main,false);
+assert.equal(s.accept(state(4,true,true,3)).status,200);
+assert.equal(s.get().selected,3);
+assert.equal(s.accept(state(5,false,false)).status,200);
+assert.equal(s.get().alive,false); assert.equal(s.get().main,false);
+assert.equal(s.accept(state(6)).status,410); assert.equal(stops.length,1);
+assert.equal(s.arm(),false); assert.equal(s.launched(),false);
+time = 100; s = make(); time = 8101;
+assert.equal(s.launched(),false); assert.equal(s.get().alive,false);
+time = 100; s = make(); assert(s.launched()); time = 3600;
+assert.equal(s.accept(state(1)).status,410); assert.equal(s.get().alive,false);
+time = 598000; s = make(); s.arm(); s.launched();
+assert.equal(s.get().expiresAt,600000);
+time = 600000; s.expire(); assert.equal(s.get().alive,false);
+for (const invalid of [state(0),state(1.5),state(Infinity),state(9007199254740992),state(1,true,false),
+  state(1,true,true,-1),state(1,true,true,9),state(1,true,true,1.1),state(1,'true'),null,[]]) {
+  assert(!validState(invalid),JSON.stringify(invalid));
+}
+const home = {fullscreen:'com.webos.app.home',surfaces:['com.webos.app.home'],focus:['com.webos.app.home'],native:[]};
+assert.equal(checkSource(home,true),home);
+const web = {...home,focus:['com.gathin.tvcontrolcentre'],surfaces:[...home.surfaces,'com.gathin.tvcontrolcentre'],native:['com.gathin.nativeblurdiagnostic']};
+assert.equal(checkSource(web,false),web); assert.throws(()=>checkSource(web,true));
+assert.throws(()=>checkSource({...home,fullscreen:'com.example.video'},false));
+assert.throws(()=>checkSource({...home,native:['com.webos.app.quicksettings']},false));
+assert.throws(()=>checkSource({...home,focus:[]},false));
+const youtube = {fullscreen:'youtube.leanback.v4',surfaces:['youtube.leanback.v4'],focus:['youtube.leanback.v4'],native:[]};
+assert.equal(checkSource(youtube,true,'youtube.leanback.v4'),youtube);
+assert.throws(()=>checkSource(youtube,true,home.fullscreen));
+assert.throws(()=>checkSource({...youtube,surfaces:[...youtube.surfaces,home.fullscreen]},true));
+const apple = {fullscreen:'com.apple.applemusic',surfaces:['com.apple.applemusic'],focus:['com.apple.applemusic'],native:[]};
+assert.equal(checkSource(apple,true,apple.fullscreen),apple);
+assert.throws(()=>checkSource(apple,true,youtube.fullscreen));
+const netflix = {fullscreen:'netflix',surfaces:['netflix'],focus:['netflix'],native:[]};
+assert.equal(checkSource(netflix,true,'netflix'),netflix);
+assert.throws(()=>checkSource(netflix,true,apple.fullscreen));
+assert.throws(()=>checkSource({...netflix,fullscreen:'netflix.clone',surfaces:['netflix.clone'],focus:['netflix.clone']},true));
+assert.throws(()=>checkSource({...netflix,native:['com.webos.app.quicksettings']},true));
+console.log('PASS: startup/heartbeat leases, expiry races, stale sequences, terminal visibility, hard limit, and app/overlay guards');

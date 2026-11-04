@@ -1,0 +1,20 @@
+/* Tile actions: same neutral glass and remote focus treatment as Control Centre. */
+#tileActionShade { position:absolute; top:0; left:0; width:1920px; height:1080px; z-index:8;
+  background:rgba(0,0,0,.15); opacity:0; visibility:hidden; pointer-events:none; transition:opacity 120ms ease; }
+#tileActionMenu { position:absolute; width:344px; padding:0; box-sizing:border-box; z-index:9;
+  background:none; border:0; box-shadow:none; color:#ededed;
+  opacity:0; visibility:hidden; transform:translateY(8px); transition:opacity 140ms ease,transform 140ms ease; }
+body.tileMenuOpen #tileActionShade { opacity:1; visibility:visible; pointer-events:auto; }
+body.tileMenuOpen #tileActionMenu { opacity:1; visibility:visible; transform:none; }
+body.tileMenuOpen header,body.tileMenuOpen #stage { pointer-events:none; }
+/* Reuse Control Centre's .ccAction pills instead of a separate menu surface. */
+.tileAction.ccAction { display:flex; align-items:center; min-height:78px; margin:0 0 14px; }
+.tileAction.ccAction:last-child { margin-bottom:0; }
+.tileAction svg { width:34px; height:34px; margin-right:18px; fill:none; stroke:currentColor; stroke-width:1.7;
+  stroke-linecap:round; stroke-linejoin:round; }
+#noApps { top:680px; left:300px; width:1320px; text-align:center; padding:0; }
+#noApps strong,#noApps span { display:block; }
+#noApps strong { font-size:38px; font-weight:500; letter-spacing:-.03em; }
+#noApps span { margin-top:15px; font-size:24px; color:rgba(255,255,255,.8); }
+#noApps button { margin-top:28px; padding:18px 30px; border-radius:28px; border:1px solid rgba(255,255,255,.8);
+  background:#f4f4f4; color:#202020; font:500 24px Arial, Helvetica, sans-serif; cursor:pointer; }

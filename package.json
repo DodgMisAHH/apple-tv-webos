@@ -1,0 +1,17 @@
+{
+  "name": "apple-tv-webos",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Apple TV-inspired launcher and Control Centre for LG webOS TVs",
+  "scripts": {
+    "prepare": "node scripts/prepare-app.cjs",
+    "test": "node scripts/check-launcher.cjs",
+    "build:control-centre": "node scripts/build-control-centre.cjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "acorn": "8.18.0"
+  }
+}

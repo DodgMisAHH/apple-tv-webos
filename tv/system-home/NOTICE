@@ -1,0 +1,8 @@
+The native-executable stand-in design was informed by CleanYourTV for LG webOS:
+https://github.com/lasharor/cleanyourtv-WebOS
+In particular, scripts/home-standin.sh and scripts/jtool.js document the SAM
+registration and direct WebAppMgr launch approach. This implementation is
+written independently for this launcher, with ES5 runtime and ownership checks.
+
+CleanYourTV is distributed under the MIT License. Its upstream license is at:
+https://github.com/lasharor/cleanyourtv-WebOS/blob/dev/LICENSE

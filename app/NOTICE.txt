@@ -1,0 +1,24 @@
+apple-tv-webos is an independent community project, not affiliated with Apple or LG.
+Application code: MIT, copyright 2026 Gathin, OmkarK97, hoangvya19.
+The complete MIT terms are in LICENSE.txt.
+
+qrcode-generator (app/qrcode.js): copyright (c) 2009 Kazuhiko Arase, MIT.
+Original source: https://github.com/kazuhikoarase/qrcode-generator
+The MIT terms in LICENSE.txt apply to this component as well.
+
+Generic interface icons (ui-icons/): original drawings, project MIT license.
+System fonts are used. No Apple font files or SF Symbols are bundled.
+
+Home wallpaper: Misty coast by Ganapathy Kumar,
+https://unsplash.com/photos/n4VMQZIkgDg
+Used under the Unsplash License: https://unsplash.com/license
+misty-frost.jpg is a softened derivative. The floating overlay does not bundle it.
+
+Home brand marks: Simple Icons (CC0) and Custom Brand Icons (MIT), adapted via
+CleanFrame. Their notices and source registers are in marks/ in the Home package.
+CleanFrame source revision: 58ac92a7b8f80047ca26e5b7097f5e1616762db0
+https://github.com/nthnclrk/CleanFrame
+Brand marks identify apps; trademarks belong to their owners.
+
+Source and full asset credits:
+https://github.com/DodgMisAHH/apple-tv-webos

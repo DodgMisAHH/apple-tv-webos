@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Control Centre</title>
+  <link rel="stylesheet" href="control-centre.css">
+  <link rel="stylesheet" href="hidden-apps.css">
+  <link rel="stylesheet" href="overlay.css">
+</head>
+<body>
+  <div id="screen">
+    <header><div id="timeRow"><span id="clock"></span><span id="ampm"></span></div></header>
+    <span id="wifiLabel" hidden>Wi-Fi</span>
+    <div id="ccShade"></div>
+    <section id="controlCentre" role="dialog" aria-modal="true" aria-label="Control Centre">
+      <div class="ccHeading"><h1>Control Centre</h1><button id="ccClose" aria-label="Close Control Centre">×</button></div>
+      <div id="ccTiles"></div>
+      <div id="ccDetail" hidden><h2></h2><p></p><button id="ccDetailBack">Back</button></div>
+      <div class="ccFooter"><span class="ccBack">‹</span> Back to your app</div>
+    </section>
+    <section id="wallPanel" class="hidden" role="dialog" aria-modal="true" aria-label="Change Home wallpaper">
+      <div id="wallQr"></div>
+      <div id="wallText"><div id="wallTitle"></div><div id="wallScan"></div><div id="wallUrl"></div></div>
+      <button id="wallBack">Back</button>
+    </section>
+    <div id="toast" role="status"></div>
+  </div>
+  <script src="screen.js"></script>
+  <!-- Defaults permit browser preview; live Home settings remain authoritative on the TV. -->
+  <script src="config.js"></script>
+  <script src="user.js"></script>
+  <script src="file:///media/developer/apps/usr/palm/applications/com.gathin.tvhome/config.js"></script>
+  <script src="file:///media/developer/apps/usr/palm/applications/com.gathin.tvhome/user.js"></script>
+  <script src="overlay.js"></script>
+  <script src="tv-controls.js"></script>
+  <script src="wifi-controls.js"></script>
+  <script src="vpn-controls.js"></script>
+  <script src="control-centre.js"></script>
+  <script>window.ControlCentreOverlay.start();</script>
+</body>
+</html>

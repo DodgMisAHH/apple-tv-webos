@@ -1,0 +1,36 @@
+[
+  {
+    "icon": "spotify",
+    "source": "https://github.com/simple-icons/simple-icons/blob/develop/icons/spotify.svg",
+    "licence": "CC0-1.0",
+    "note": "Shape unchanged; white fill for launcher."
+  },
+  {
+    "icon": "hbomax",
+    "source": "https://github.com/simple-icons/simple-icons/blob/develop/icons/hbomax.svg",
+    "licence": "CC0-1.0",
+    "note": "Shape unchanged; white fill for launcher."
+  },
+  {
+    "icon": "tubi",
+    "source": "https://github.com/simple-icons/simple-icons/blob/develop/icons/tubi.svg",
+    "licence": "CC0-1.0",
+    "note": "Shape unchanged; white fill for launcher."
+  },
+  {
+    "icon": "nvidia",
+    "source": "https://raw.githubusercontent.com/simple-icons/simple-icons/4d29a35c954699b389a834aacc97dd6e7e74143c/icons/nvidia.svg",
+    "licence": "CC0-1.0",
+    "note": "Recoloured white."
+  },
+  {
+    "icon": "browser",
+    "source": "Original local compass SVG drawing",
+    "licence": "MIT"
+  },
+  {
+    "icon": "apps",
+    "source": "Original local four-square SVG drawing",
+    "licence": "MIT"
+  }
+]

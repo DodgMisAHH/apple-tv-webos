@@ -1,0 +1,45 @@
+name: Checks
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checks-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install check dependencies
+        run: npm ci --ignore-scripts
+      - name: Prepare default app data
+        run: node scripts/prepare-app.cjs
+      - name: Check shell and Python syntax
+        run: |
+          for script in install*.sh home-watch-mac.sh tv/*.sh tv/*/*.sh; do
+            bash -n "$script"
+          done
+          python3 -m compileall -q lgtv.py home-watch.py sync-apps.py scripts tv
+      - name: Run offline regression checks
+        run: node scripts/check-launcher.cjs
+      - name: Build the Control Centre source package
+        run: node scripts/build-control-centre.cjs

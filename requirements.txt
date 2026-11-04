@@ -1,0 +1,2 @@
+# Desktop pairing / app-sync helper (Python 3.10+).
+websockets==17.4

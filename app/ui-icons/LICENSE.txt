@@ -1,0 +1,3 @@
+Original geometric interface icons created for apple-tv-webos.
+Distributed under the project MIT License; see ../LICENSE.txt.
+No Apple SF Symbols or other proprietary icon assets are included.

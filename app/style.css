@@ -1,0 +1,408 @@
+/* Sizes are the Android launcher's dp values doubled: webOS renders web apps at 1920x1080. */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: #000;
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  cursor: default;
+}
+
+/* ---- ambient glow ---------------------------------------------------------------------------- */
+
+.ambient {
+  position: absolute;
+  z-index: 1;
+  top: 0; right: 0; bottom: 0; left: 0;
+  opacity: 0;
+  transition: opacity 600ms ease;
+  pointer-events: none;
+}
+
+/* ---- header ---------------------------------------------------------------------------------- */
+
+header {
+  position: absolute;
+  top: 52px;
+  left: 112px;
+  right: 112px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  z-index: 3;
+  transition: opacity 140ms ease, transform 180ms ease;
+}
+
+/* Below the dock: the header slides away so the grid gets the whole screen. */
+body.scrolled header {
+  opacity: 0;
+  transform: translateY(-48px);
+  pointer-events: none;
+}
+
+
+#timeRow { display: flex; align-items: flex-end; }
+
+#clock {
+  font-size: 104px;
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+#ampm {
+  margin: 0 0 16px 12px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+
+
+#topButtons { display: flex; margin-bottom: 12px; }
+
+/* Frosted pill, tvOS style. */
+.pill {
+  display: flex;
+  align-items: center;
+  height: 84px;
+  margin-left: 20px;
+  padding: 0 40px 0 32px;
+  border-radius: 42px;
+  border: 2px solid rgba(255, 255, 255, 0.22);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.08));
+  color: #fff;
+  font-size: 30px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  transition: background 160ms ease, color 160ms ease, transform 200ms ease;
+}
+
+.pill svg { width: 44px; height: 44px; margin-right: 18px; fill: currentColor; }
+
+.pill.focused {
+  background: rgba(255, 255, 255, 0.96);
+  border-color: transparent;
+  color: #000;
+  transform: scale(1.04);
+}
+
+/* ---- grid ------------------------------------------------------------------------------------ */
+
+#viewport {
+  position: absolute;
+  z-index: 2;
+  top: 0; right: 0; bottom: 0; left: 0;
+  overflow: hidden;
+}
+
+#stage {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  will-change: transform;
+}
+
+#stage, #dockFrost {
+  transition: transform 420ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+#dockFrost {
+  position: absolute; width: 1920px; height: 1080px;
+  will-change: transform; pointer-events: none;
+}
+
+/* The tvOS lighter band behind the dock row. */
+#dockBand {
+  position: absolute;
+  border-radius: 52px;
+  background: #141416;
+  border: 2px solid rgba(255, 255, 255, 0.12);
+}
+
+.item {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--tile-w, 360px);
+  opacity: 1;
+  transition: transform 320ms cubic-bezier(0.25, 0.8, 0.3, 1);
+}
+
+
+.item.dock .name { display: none; }
+
+/* The held tile wiggles and floats above the other tiles. */
+/* The held tile follows each input immediately. Only its neighbours glide aside,
+   so quick taps never retarget an unfinished held-tile position transition. */
+.item.moving { z-index: 2; transition: none; }
+
+.item.moving .card {
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.6);
+  animation: wiggle 240ms ease-in-out infinite alternate;
+}
+
+@keyframes wiggle {
+  from { transform: scale(1.1) rotate(-1.2deg); }
+  to { transform: scale(1.1) rotate(1.2deg); }
+}
+
+
+.card {
+  position: relative;
+  width: var(--tile-w, 360px);
+  height: var(--tile-h, 202px);
+  border-radius: var(--tile-r, 32px);
+  overflow: hidden;
+  background: #1c1c1e;
+  transition: transform 180ms ease;
+}
+
+.item.render-cached .card { will-change: transform; }
+
+/* Faint rim so black tiles (Apple TV) still read against the black page. */
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  border-radius: var(--tile-r, 32px);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+.item.focused .card {
+  transform: scale(1.1);
+  transition: transform 140ms cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+.card img {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 100%;
+  transform: translateX(-50%);
+}
+
+/* Transparent system icons: smaller glyph, centred. */
+.card.glyph img {
+  top: 50%;
+  height: 62%;
+  transform: translate(-50%, -50%);
+}
+
+.name {
+  height: 44px;
+  margin-top: 14px;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0;
+  transform: translateY(-12px);
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+.item.focused .name { opacity: 1; transform: translateY(8px); }
+
+/* ---- inputs dropdown ------------------------------------------------------------------------- */
+
+#inputsPanel {
+  position: absolute;
+  z-index: 5;
+  padding: 16px;
+  border-radius: 40px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(180deg, rgba(42, 42, 46, 0.95), rgba(22, 22, 24, 0.96));
+  transform-origin: top;
+  transition: opacity 220ms ease, transform 220ms cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+#inputsPanel.hidden { opacity: 0; transform: translateY(-16px) scaleY(0.92); pointer-events: none; }
+
+.inputRow {
+  display: flex;
+  align-items: center;
+  height: 84px;
+  padding: 0 24px;
+  border-radius: 24px;
+  font-size: 30px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.inputRow svg { width: 40px; height: 40px; margin-right: 20px; fill: currentColor; }
+
+.inputRow.focused { background: rgba(255, 255, 255, 0.96); color: #000; }
+
+.separator { height: 2px; margin: 12px 24px; background: rgba(255, 255, 255, 0.12); }
+
+/* ---- toast ----------------------------------------------------------------------------------- */
+
+#toast {
+  position: absolute;
+  left: 50%;
+  bottom: 80px;
+  padding: 20px 40px;
+  border-radius: 40px;
+  background: rgba(40, 40, 44, 0.95);
+  font-size: 28px;
+  opacity: 0;
+  transform: translateX(-50%);
+  transition: opacity 200ms ease;
+  z-index: 6;
+}
+
+#toast.shown { opacity: 1; }
+
+/* ---- LG TV Vibehack additions ---- */
+#weather {
+  margin: 16px 0 0 8px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 30px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  white-space: pre;
+  opacity: 0;
+  transition: opacity 600ms ease;
+}
+#weather.shown { opacity: 1; }
+body.no-glow .ambient { display: none; }
+
+/* Wallpaper button (icon only, so the top row still fits next to the weather) and its QR panel. */
+.pill.iconOnly { padding: 0 20px; }
+.pill.iconOnly svg { margin-right: 0; }
+
+#wallPanel {
+  position: absolute;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  padding: 32px;
+  border-radius: 40px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(180deg, rgba(42, 42, 46, 0.96), rgba(22, 22, 24, 0.97));
+  transform-origin: top;
+  transition: opacity 220ms ease, transform 220ms cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+#wallPanel.hidden { opacity: 0; transform: translateY(-16px) scaleY(0.92); pointer-events: none; }
+#wallQr { width: 300px; height: 300px; padding: 16px; border-radius: 24px; background: #fff; }
+#wallQr img { display: block; width: 100%; height: 100%; image-rendering: pixelated; }
+#wallText { margin-left: 36px; max-width: 520px; }
+#wallTitle { font-size: 38px; font-weight: 600; }
+#wallScan { margin-top: 14px; color: rgba(255, 255, 255, 0.75); font-size: 28px; line-height: 1.35; }
+#wallUrl { margin-top: 22px; color: rgba(255, 255, 255, 0.5); font-size: 22px; word-break: break-all; }
+
+/* Shown when apps.js has no apps, so the screen is never just black. */
+#noApps {
+  position: absolute;
+  top: 300px;
+  left: 112px;
+  right: 112px;
+  padding: 40px 48px;
+  border-radius: 40px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(30, 30, 34, 0.94);
+  font-size: 34px;
+  line-height: 1.45;
+  opacity: 1;
+}
+
+/* Glass presentation for Chromium 79. The tray uses a prepared frost texture;
+   Home's open controls add same-page backdrop blur below. No animated blur or frame loops. */
+html, body { width: 100%; height: 100%; }
+body { font-family: Arial, Helvetica, sans-serif; }
+#screen { position: absolute; width: 1920px; height: 1080px; overflow: hidden; transform-origin: top left; }
+#screen::before, #screen::after { content: ''; position: absolute; z-index: 0;
+  top: 0; right: 0; bottom: 0; left: 0; pointer-events: none; }
+#screen::before { background: linear-gradient(180deg, rgba(15,27,36,.08), transparent 44%, rgba(12,22,33,.24)); }
+#screen::after { background: linear-gradient(180deg, rgba(33,57,73,.12), rgba(20,30,42,.35)); opacity: 0; }
+header { top: 44px; left: 52px; right: 44px; align-items: flex-start; flex-direction: row-reverse; }
+#leftBlock { display: flex; flex-direction: column; align-items: flex-end; }
+#timeRow { padding: 0 22px; border-radius: 31px; background: rgba(45,45,45,.38);
+  border: 1px solid rgba(255,255,255,.09);
+  box-shadow: inset 0 2px 1px rgba(255,255,255,.11), inset 0 -1px 0 rgba(255,255,255,.035); }
+#timeRow { align-items: center; height: 60px; flex-shrink: 0; white-space: nowrap; }
+#clock, #ampm { color: #dedede; font-size: 26px; font-weight: 600;
+  letter-spacing: -.035em; line-height: 1; text-shadow: none; }
+#clock { font-variant-numeric: tabular-nums; }
+#ampm { margin: 0 0 0 3px; }
+#ampm:empty { margin: 0; }
+#weather { margin: 10px 6px 0 0; max-width: 380px; font-size: 18px; line-height: 1.45;
+  text-align: right; white-space: normal; color: rgba(255,255,255,.78);
+  text-shadow: 0 1px 3px rgba(0,0,0,.45); }
+#weather:empty { display: none; }
+#topButtons { margin: 0; padding: 4px; border-radius: 31px; border: 1px solid rgba(255,255,255,.09);
+  background: rgba(45,45,45,.38);
+  box-shadow: inset 0 2px 1px rgba(255,255,255,.11), inset 0 -1px 0 rgba(255,255,255,.035);
+  opacity: 0; pointer-events: none; transition: opacity 160ms ease; }
+body.controls-open #topButtons { opacity: 1; pointer-events: auto; }
+.pill, .pill.iconOnly { position: relative; width: 54px; height: 50px; padding: 12px 14px; margin: 0 2px;
+  border: 1px solid transparent; border-radius: 25px; background: transparent; color: #dedede;
+  transition: transform 140ms cubic-bezier(0.2, 0.8, 0.3, 1); }
+.pill svg, .pill.iconOnly svg { width: 26px; height: 26px; margin: 0; }
+.pill span { display: none; position: absolute; top: 66px; left: 0; font-size: 21px; color: #dedede; }
+.pill.focused { color: #fff; background: rgba(255,255,255,.16); border-color: rgba(255,255,255,.3); transform: scale(1.06); }
+.pill.focused span { display: block; }
+#dockBand { border-radius: 58px; overflow: hidden; border: 1px solid rgba(255,255,255,.16);
+  background: linear-gradient(180deg, rgba(36,37,39,.54), rgba(25,26,29,.62));
+  box-shadow: inset 0 1px 1px rgba(255,255,255,.2), inset 0 -1px 0 rgba(255,255,255,.035), 0 15px 30px rgba(0,0,0,.14); }
+#dockBand::before { content: ''; position: absolute; z-index: 1; top: 1px; left: 34px; right: 34px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent); }
+#dockBand.frosted::after { content: ''; position: absolute; top: 0; right: 0; bottom: 0; left: 0;
+  background: linear-gradient(180deg,rgba(29,30,33,.52),rgba(24,25,28,.6)); pointer-events: none; }
+#shelfHint { position: absolute; left: 933px; width: 54px; height: 20px; opacity: .5; pointer-events: none; }
+#shelfHint svg { width: 100%; height: 100%; fill: none; stroke: #fff; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+body.browsing #shelfHint { visibility: hidden; }
+.item { z-index: 1; }
+.item.focused { z-index: 2; }
+.card { border-radius: var(--tile-r); background: #25384b; box-shadow: 0 8px 18px rgba(5,20,35,.16);
+  transition: transform 140ms cubic-bezier(0.2, 0.8, 0.3, 1); }
+.card::after { display: block; z-index: 1; border-radius: inherit;
+  background: linear-gradient(155deg, rgba(255,255,255,.16), transparent 46%);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,.35), inset 0 0 0 1px rgba(255,255,255,.18); pointer-events: none; }
+.item.focused .card { transform: scale(var(--focus-scale, 1.22)); }
+
+.card img, .card.glyph img { top: 50%; left: 50%; width: 68%; height: 66%; object-fit: contain; transform: translate(-50%,-50%); }
+.card.fallback img { width: auto; height: 100%; max-width: 100%; border-radius: 0; filter: none; }
+.card.glyph img { height: 68%; width: 68%; }
+.card.brand-stremio { background: linear-gradient(145deg, #9365f3, #5b28be); }
+.card.brand-netflix { background: linear-gradient(145deg, #242429, #08080b); }
+.card.brand-youtube { background: linear-gradient(145deg, #ffffff, #e7ebed); }
+.card.brand-apple { background: linear-gradient(145deg, #262a30, #06080b); }
+.card.brand-prime { background: linear-gradient(145deg, #16b5ec, #0877da); }
+.card.brand-music { background: linear-gradient(145deg, #ff718b, #fa234e); }
+.card.brand-disney { background: linear-gradient(145deg, #056697, #062744); }
+.card.brand-browser { background: linear-gradient(145deg, #36cefa, #076ce3); }
+.card.brand-apps { background: linear-gradient(145deg, #459fff, #2454dd); }
+.card.brand-gfn { background: linear-gradient(145deg, #91d92e, #4d9b0c); }
+.card.brand-browser img, .card.brand-apps img { width: 60%; height: 72%; }
+.card.brand-gfn img { width: 58%; height: 78%; }
+.card.brand-netflix img { width: 53%; height: 70%; }
+.card.missing { display: flex; align-items: center; justify-content: center; font-size: 52px; }
+.name { display: block; height: 48px; margin-top: 24px; padding: 0 6px; font-size: 28px;
+  font-weight: 600; letter-spacing: -.025em; opacity: 0; transform: translateY(-4px); text-shadow: 0 2px 8px rgba(0,0,0,.5); }
+.item.focused .name { opacity: 1; transform: translateY(5px); }
+.item.dock .name { display: none; }
+#toast { bottom: 40px; font-size: 24px; padding: 14px 28px; }
+body.browsing #screen::before { opacity: 0; }
+body.browsing #screen::after { opacity: 1; }
+body.browsing header { opacity: 0; pointer-events: none; }
+#inputsPanel, #wallPanel { border-color: rgba(255,255,255,.34); box-shadow: inset 0 1px 0 rgba(255,255,255,.22), 0 20px 50px rgba(0,0,0,.25); }
+/* Home only: this stylesheet is neither loaded nor packaged by the floating overlay.
+   8px is a visual calibration for the native floating effect, not equivalent units. */
+body.ccOpen #ccTiles > .ccTile:not(.selected) {
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0ms !important; animation: none !important; }
+}
