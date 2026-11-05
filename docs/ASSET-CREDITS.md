@@ -20,6 +20,14 @@ TV build remains separate and is not the source of release assets.
   `a53cabf49bf439023a8f33585af30d783bffe51b`.
 - Browser compass and Apps grid: original SVG drawings for this launcher.
 - `app/qrcode.js`: qrcode-generator, Kazuhiko Arase, MIT; notice retained in source.
+- The film frame in `docs/media/video-overlay.jpg` and the streamed trailer in
+  the video preview: **Sintel**, © copyright Blender Foundation |
+  [durian.blender.org](https://durian.blender.org/),
+  [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/).
+  [Sharing terms](https://durian.blender.org/sharing/). The screenshot adds the
+  project's Control Centre over a film frame. The full trailer streams from
+  [W3C's media host](https://media.w3.org/2010/05/sintel/trailer.mp4); no video file
+  is bundled in this repository.
 
 The wallpaper and initial brand assets were adapted from
 [CleanFrame](https://github.com/nthnclrk/CleanFrame), pinned at

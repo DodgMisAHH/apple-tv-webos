@@ -61,22 +61,14 @@
   }
 
   var weatherKey = null, weatherTimer = null, weatherRequest = null, weatherGeneration = 0;
-  var weatherDue = 0, weatherConfig = null, weatherNames = null;
+  var weatherDue = 0, weatherConfig = null;
   var el = document.getElementById('weather');
-  function names(vi) {
-  var NAMES = vi ? {
-    0: 'Trời quang', 1: 'Ít mây', 2: 'Có mây', 3: 'Nhiều mây', 45: 'Sương mù', 48: 'Sương mù',
-    51: 'Mưa phùn nhẹ', 53: 'Mưa phùn', 55: 'Mưa phùn dày', 61: 'Mưa nhẹ', 63: 'Mưa vừa', 65: 'Mưa to',
-    71: 'Tuyết nhẹ', 73: 'Tuyết', 75: 'Tuyết dày', 80: 'Mưa rào nhẹ', 81: 'Mưa rào', 82: 'Mưa rào lớn',
-    95: 'Dông', 96: 'Dông, mưa đá', 99: 'Dông, mưa đá'
-  } : {
+  var weatherNames = {
     0: 'Clear', 1: 'Mostly clear', 2: 'Partly cloudy', 3: 'Cloudy', 45: 'Fog', 48: 'Fog',
     51: 'Light drizzle', 53: 'Drizzle', 55: 'Heavy drizzle', 61: 'Light rain', 63: 'Rain', 65: 'Heavy rain',
     71: 'Light snow', 73: 'Snow', 75: 'Heavy snow', 80: 'Light showers', 81: 'Showers', 82: 'Heavy showers',
     95: 'Thunderstorm', 96: 'Thunderstorm, hail', 99: 'Thunderstorm, hail'
   };
-    return NAMES;
-  }
   function scheduleWeather(delay) {
     clearTimeout(weatherTimer);
     if (weatherConfig && !document.hidden) weatherTimer = setTimeout(loadWeather, delay);
@@ -117,14 +109,13 @@
   function configureWeather() {
     var c = window.CONFIG || {}, w = c.weather || {};
     var enabled = w.enabled && typeof w.latitude === 'number' && typeof w.longitude === 'number';
-    var key = JSON.stringify([enabled, w.latitude, w.longitude, w.unit, w.place, c.language]);
+    var key = JSON.stringify([enabled, w.latitude, w.longitude, w.unit, w.place]);
     if (key === weatherKey) return;
     weatherKey = key; weatherGeneration++; clearTimeout(weatherTimer);
     if (weatherRequest) { weatherRequest.abort(); weatherRequest = null; }
     weatherConfig = enabled ? w : null; weatherDue = 0;
     if (el) { el.textContent = ''; el.className = ''; }
     if (!el || !enabled) return;
-    weatherNames = names(c.language === 'vi');
     scheduleWeather(1500);
   }
   document.addEventListener('visibilitychange', function () {

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Control Centre over video · Browser demonstration</title>
+  <!-- OVERLAY_STYLES -->
+  <link rel="stylesheet" href="/__demo/video-overlay.css">
+</head>
+<body>
+  <main>
+    <div id="demo-stage" class="stage" aria-label="Video with the shared Control Centre overlay">
+      <video id="video" autoplay muted loop playsinline preload="metadata" aria-label="Sintel trailer">
+        <source src="https://media.w3.org/2010/05/sintel/trailer.mp4" type="video/mp4">
+      </video>
+      <!-- OVERLAY_DOM -->
+      <div class="caption"><strong>Browser demonstration</strong><span>Shared Control Centre over HTML5 video</span></div>
+    </div>
+    <div class="toolbar" aria-label="Demonstration controls">
+      <button id="toggle" type="button" disabled aria-controls="controlCentre" aria-expanded="true">Hide Control Centre</button>
+      <button id="play" type="button">Play</button>
+      <label class="seek-label" for="seek">Seek</label>
+      <input id="seek" type="range" min="0" max="1" value="0" step="0.1" disabled aria-label="Video position">
+      <output id="time" for="seek">0:00 / 0:00</output>
+      <label class="file-button" for="local-video">Use local video<input id="local-video" type="file" accept="video/*"></label>
+    </div>
+    <p id="status" role="status">Muted playback. Select the panel to use arrows, Enter and Escape. No TV is connected.</p>
+    <p id="credit">Sintel trailer · <a href="https://durian.blender.org/">© copyright Blender Foundation | durian.blender.org</a> · <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a> · <a href="https://media.w3.org/2010/05/sintel/trailer.mp4">Original hosted trailer</a></p>
+    <p class="note">This browser composition demonstrates the interface only; playback and overlay behavior on an LG TV require separate device testing. The floating panel uses static translucency, not video blur.</p>
+  </main>
+  <script>
+    // Preview-only plumbing, before shared handlers; never emulate TV services.
+    window.OVERLAY_HOME_BASE = '/__demo/';
+    window.close = function () { if (window.closeControlCentre) window.closeControlCentre(); };
+    window.addEventListener('keydown', function (event) {
+      if (event.target.closest && event.target.closest('.toolbar')) event.stopImmediatePropagation();
+    }, true);
+  </script>
+  <!-- OVERLAY_SCRIPTS -->
+  <script src="/__demo/video-overlay.js"></script>
+</body>
+</html>

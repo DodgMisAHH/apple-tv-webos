@@ -60,7 +60,7 @@ ares-launch -d <device-name> com.gathin.tvhome
 
 Replace the angle-bracket placeholders before running these commands. Re-run inventory sync and package/install after adding or removing TV apps. Developer Mode expiration can remove installed developer apps; maintain the session through the Developer Mode app.
 
-Edit `app/config.js` before packaging for default language, clock, wallpaper, columns and weather. A saved TV preference can override the default. Long-press an app to change its position or visibility. For a quick-launch shortcut, use the TV's supported number-key shortcut feature while the launcher is open.
+Edit `app/config.js` before packaging for default clock, wallpaper, columns and weather. A saved TV preference can override the default. Long-press an app to change its position or visibility. For a quick-launch shortcut, use the TV's supported number-key shortcut feature while the launcher is open.
 
 ## Rooted TV: install the local package
 

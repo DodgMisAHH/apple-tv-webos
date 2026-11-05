@@ -39,6 +39,7 @@ function setup(preview = false) {
     clearTimeout: id => timers.delete(id), addEventListener() {}, location: { reload() {} }, console };
   scope.window = scope; vm.createContext(scope);
   vm.runInContext(fs.readFileSync('app/config.js', 'utf8'), scope);
+  scope.CONFIG.language = 'vi'; // A legacy saved preference must not change the English UI.
   scope.CONFIG.hiddenApps = []; scope.CONFIG.dockApps = [];
   values.set('tvhome.order', JSON.stringify({ dock: '', ids: ['no.icon', 'has.icon'] }));
   scope.TV_APPS = { apps: [
@@ -54,6 +55,8 @@ function setup(preview = false) {
 }
 for (const preview of [false, true]) {
   const test = setup(preview), tiles = test.tiles();
+  assert.equal(test.scope.document.documentElement.lang, 'en');
+  assert.equal(test.ids.get('btnInputs').querySelector('span').textContent, 'Inputs');
   assert.deepEqual(tiles.map(tile => tile.getAttribute('aria-label')), ['Missing icon', 'Available icon'],
     'Legacy order seeds the shared runtime without losing apps lacking icons');
   assert(tiles[0].children[0].classList.contains('missing'));

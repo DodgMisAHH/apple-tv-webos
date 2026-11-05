@@ -62,7 +62,7 @@ function setup({ hidden = false, preview = false, retained = false, networkFails
     };
   }
   function FakeDate() { return new Date(now); } FakeDate.now = () => now;
-  const scope = { window, document, CONFIG: { clock24: false, language: 'en' }, Date: FakeDate,
+  const scope = { window, document, CONFIG: { clock24: false, language: 'vi' }, Date: FakeDate,
     atob: value => Buffer.from(value, 'base64').toString('binary'),
     setTimeout(callback, ms) { timers.set(++nextTimer, { callback, at: now + ms }); return nextTimer; },
     clearTimeout(id) { timers.delete(id); } };
@@ -118,6 +118,7 @@ function setup({ hidden = false, preview = false, retained = false, networkFails
 
 let test = setup();
 assert(test.open); assert.equal(test.ready, 1); assert.equal(test.closes, 0);
+assert.equal(test.document.documentElement.lang, 'en', 'Legacy language preferences cannot change the overlay language');
 assert.equal(test.document.getElementById('clock').textContent, '1:07');
 assert.equal(test.document.getElementById('ampm').textContent, 'pm');
 assert.equal(test.query('/launch').length, 0, 'Opening controls cannot launch Home or disturb playback');

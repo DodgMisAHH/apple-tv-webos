@@ -15,6 +15,12 @@ function fire(){const ts=timers.splice(0);ts.forEach(t=>t.fn());}
 function jpeg(w,h){return Buffer.from([255,216,255,192,0,17,8,h>>8,h&255,w>>8,w&255,3,1,17,0,2,17,0,3,17,0,255,217]);}
 function multipart(parts){const out=[];for(const [name,body]of Object.entries(parts)){out.push(Buffer.from('--test-boundary\r\nContent-Disposition: form-data; name="'+name+'"; filename="'+name+'.jpg"\r\nContent-Type: image/jpeg\r\n\r\n'),body,Buffer.from('\r\n'));}out.push(Buffer.from('--test-boundary--\r\n'));return Buffer.concat(out);}
 try {
+ fs.writeFileSync(path.join(dir,'settings.json'),JSON.stringify({language:'vi'}));
+ assert.equal(JSON.parse(req('GET','/api/state').body).language,'en','Cached phone pages receive English despite old saved preferences');
+ const city=req('GET','/api/city?q=London');
+ assert.equal(calls[0].cmd,'curl');assert(calls[0].args.at(-1).includes('language=en&name=London'));
+ calls[0].callback(null,JSON.stringify({results:[{name:'London',country:'United Kingdom',latitude:51.5,longitude:-0.12}]}));
+ assert.equal(JSON.parse(city.body).results[0].name,'London');calls.length=0;
  const responses=[];for(let i=1;i<=5;i++)responses.push(req('POST','/api/dim?v='+i/10));
  assert.equal(calls.length,0);fire();assert.equal(calls.length,1,'rapid settings changes batch into one worker');
  assert(calls[0].args.includes('--settings'));assert(responses.every(r=>!r.ended),'responses wait for publication');

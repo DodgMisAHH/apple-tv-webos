@@ -12,6 +12,7 @@ to review this source.
 
 ## What is intentionally different
 
+- The current interface is English-only; language selection is not included.
 - System fonts and original MIT SVG controls replace the local Apple font/symbol
   assets. Appearance therefore differs slightly from historical screenshots.
 - A generic app inventory is provided in `app/apps.example.js`; no personal TV

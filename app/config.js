@@ -1,5 +1,5 @@
 // Default launcher settings.
-// Rooted TVs: change these with the installer flags (see README) - they are saved in user.js.
+// Rooted TVs: personal overrides are saved in user.js (see docs/SETUP.md).
 // No-root: edit this file, then run ./install-noroot.sh again.
 // App ids: `python3 sync-apps.py <TV IP> --list`, or look in app/apps.js after a sync.
 window.CONFIG = {
@@ -28,9 +28,6 @@ window.CONFIG = {
   // Tiles per row (3-10). The dock always has this many slots. Tiles resize automatically.
   // An existing saved tvhome.columns preference wins over this default.
   columns: 6,
-
-  // 'en' or 'vi'
-  language: 'en',
 
   // true = 14:45, false = 2:45 pm
   clock24: false,

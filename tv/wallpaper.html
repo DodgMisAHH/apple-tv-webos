@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
@@ -109,29 +109,18 @@
 <script>
 (function () {
   var K = new URLSearchParams(location.search).get('k');
-  var T = {
-    en: { title: 'TV wallpaper', dim: 'Darken', pick: 'Choose a photo', clear: 'Remove wallpaper', usb: 'From a USB stick in the TV',
-      usbNone: 'No photos found. Plug a USB stick with photos into the TV, then reload this page.', empty: 'No wallpaper',
-      sending: 'Sending to the TV…', done: 'Done! The TV shows the new wallpaper.', fail: 'Something went wrong, try again.',
-      removed: 'Wallpaper removed.', confirm: 'Remove the wallpaper?', loading: 'Opening the photo…',
-      cropHint: 'The frame is the TV screen. Drag to move, pinch or use the slider to zoom.',
-      zoom: 'Zoom', guides: 'Show grid and where the clock and apps go', cancel: 'Cancel', apply: 'Set as wallpaper',
-      clock: 'Clock', buttons: 'Buttons', apps: 'Apps',
-      weather: 'Weather', weatherOn: 'Showing: ', weatherOffNow: 'Weather is off.', cityPh: 'City, e.g. Hanoi',
-      find: 'Search', weatherOff: 'Turn weather off', noCity: 'No city found. Try another spelling.',
-      cityDone: 'Done! The TV shows the weather for ', weatherOffDone: 'Weather turned off.', searching: 'Searching…' },
-    vi: { title: 'Hình nền TV', dim: 'Làm tối', pick: 'Chọn ảnh', clear: 'Xoá hình nền', usb: 'Ảnh từ USB cắm vào TV',
-      usbNone: 'Không thấy ảnh. Cắm USB có ảnh vào TV rồi tải lại trang này.', empty: 'Chưa có hình nền',
-      sending: 'Đang gửi lên TV…', done: 'Xong! TV đã đổi hình nền.', fail: 'Có lỗi, thử lại nhé.',
-      removed: 'Đã xoá hình nền.', confirm: 'Xoá hình nền?', loading: 'Đang mở ảnh…',
-      cropHint: 'Khung này là màn hình TV. Kéo để di chuyển, chụm 2 ngón hoặc kéo thanh để phóng to.',
-      zoom: 'Phóng to', guides: 'Hiện lưới và chỗ đồng hồ, ứng dụng', cancel: 'Huỷ', apply: 'Đặt làm hình nền',
-      clock: 'Đồng hồ', buttons: 'Nút', apps: 'Ứng dụng',
-      weather: 'Thời tiết', weatherOn: 'Đang hiện: ', weatherOffNow: 'Đang tắt thời tiết.', cityPh: 'Thành phố, vd: Đà Lạt',
-      find: 'Tìm', weatherOff: 'Tắt thời tiết', noCity: 'Không tìm thấy, thử gõ cách khác.',
-      cityDone: 'Xong! TV hiện thời tiết ', weatherOffDone: 'Đã tắt thời tiết.', searching: 'Đang tìm…' }
+  var L = {
+    title: 'TV wallpaper', dim: 'Darken', pick: 'Choose a photo', clear: 'Remove wallpaper', usb: 'From a USB stick in the TV',
+    usbNone: 'No photos found. Plug a USB stick with photos into the TV, then reload this page.', empty: 'No wallpaper',
+    sending: 'Sending to the TV…', done: 'Done! The TV shows the new wallpaper.', fail: 'Something went wrong, try again.',
+    removed: 'Wallpaper removed.', confirm: 'Remove the wallpaper?', loading: 'Opening the photo…',
+    cropHint: 'The frame is the TV screen. Drag to move, pinch or use the slider to zoom.',
+    zoom: 'Zoom', guides: 'Show grid and where the clock and apps go', cancel: 'Cancel', apply: 'Set as wallpaper',
+    clock: 'Clock', buttons: 'Buttons', apps: 'Apps',
+    weather: 'Weather', weatherOn: 'Showing: ', weatherOffNow: 'Weather is off.', cityPh: 'City, e.g. London',
+    find: 'Search', weatherOff: 'Turn weather off', noCity: 'No city found. Try another spelling.',
+    cityDone: 'Done! The TV shows the weather for ', weatherOffDone: 'Weather turned off.', searching: 'Searching…'
   };
-  var L = T.en;
   var $ = function (id) { return document.getElementById(id); };
 
   function api(method, p, body) {
@@ -347,8 +336,6 @@
   };
 
   api('GET', 'api/state').then(function (s) {
-    L = T[s.language] || T.en;
-    document.documentElement.lang = s.language;
     ['title', 'dim', 'usb', 'cropHint', 'zoom', 'guides', 'weather'].forEach(function (k) { $('t-' + k).textContent = L[k]; });
     ['pick', 'clear', 'cancel', 'apply', 'find', 'weatherOff'].forEach(function (k) { $(k).textContent = L[k]; });
     $('city').placeholder = L.cityPh;

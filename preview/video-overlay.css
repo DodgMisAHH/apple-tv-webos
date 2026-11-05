@@ -1,0 +1,28 @@
+:root { color-scheme:light; font-family:Arial,Helvetica,sans-serif; background:#0b0e12; color:#e5e7eb; }
+* { box-sizing:border-box; }
+html,body { width:100%; height:auto; min-height:100%; overflow:auto; background:#0b0e12; color:#e5e7eb; margin:0; }
+main { max-width:1920px; margin:0 auto; padding:16px 20px; }
+.stage { position:relative; width:min(100%, calc((100vh - 230px) * 1.7777778)); aspect-ratio:16 / 9; margin:0 auto; overflow:hidden; background:#000; border:1px solid #252b33; border-radius:12px; }
+#video { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; }
+.stage #screen { position:absolute; left:0; top:0; background:transparent; }
+.stage[data-controls-open="false"] #screen { visibility:hidden; pointer-events:none; }
+.caption { position:absolute; left:28px; bottom:26px; display:flex; flex-direction:column; gap:7px; pointer-events:none; text-shadow:0 2px 8px #000; }
+.caption strong { font-size:clamp(14px,1.4vw,24px); font-weight:600; }
+.caption span { font-size:clamp(12px,1vw,17px); color:#cbd2dc; }
+.toolbar { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:14px; }
+.toolbar button,.file-button { border:1px solid #3d4652; border-radius:8px; padding:10px 14px; background:#1a2029; color:#f5f7fa; font:inherit; font-size:14px; cursor:pointer; }
+.toolbar button:hover,.file-button:hover { background:#28313d; }
+.toolbar button:focus-visible,.toolbar input:focus-visible,.file-button:focus-within { outline:2px solid #8bc8ff; outline-offset:3px; }
+.toolbar button:disabled { opacity:.5; cursor:wait; }
+#toggle { min-width:166px; }
+#play { min-width:65px; }
+.seek-label { font-size:14px; color:#b9c3d1; }
+#seek { flex:1; min-width:100px; accent-color:#e9eef5; }
+#time { font-size:13px; font-variant-numeric:tabular-nums; min-width:90px; }
+.file-button { position:relative; overflow:hidden; }
+.file-button input { position:absolute; inset:0; opacity:0; width:100%; cursor:pointer; }
+main > p { margin:12px 0 0; color:#aab5c5; font-size:13px; line-height:1.5; }
+main > p a { color:#b9d6fa; text-decoration:underline; text-underline-offset:3px; }
+.note { color:#7f8b9b; max-width:1050px; }
+@media(max-width:680px), (max-height:520px) { .stage { width:100%; } }
+@media(max-width:680px) { main { padding:10px; } .caption { left:15px; bottom:14px; gap:4px; } .toolbar { gap:8px; } #seek { flex-basis:40%; } }

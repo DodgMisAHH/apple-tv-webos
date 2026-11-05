@@ -126,7 +126,7 @@
   function updateClock() {
     var now = new Date(), hour = now.getHours(), minute = now.getMinutes();
     var time = (CONFIG.clock24 ? (hour < 10 ? '0' : '') + hour : (hour % 12 || 12)) + ':' + (minute < 10 ? '0' : '') + minute;
-    var suffix = CONFIG.clock24 ? '' : (CONFIG.language === 'vi' ? (hour < 12 ? 'SA' : 'CH') : (hour < 12 ? 'am' : 'pm'));
+    var suffix = CONFIG.clock24 ? '' : (hour < 12 ? 'am' : 'pm');
     if ($('clock').textContent !== time) $('clock').textContent = time;
     if ($('ampm').textContent !== suffix) $('ampm').textContent = suffix;
     clearTimeout(clockTimer); clockTimer = null;
@@ -172,7 +172,7 @@
     cancelClose(); wallReturn = onClose;
     var generation = ++wallGeneration;
     document.body.classList.add('wallOpen'); $('wallPanel').classList.remove('hidden');
-    $('wallQr').innerHTML = ''; $('wallTitle').textContent = CONFIG.language === 'vi' ? 'Đổi hình nền' : 'Change Home wallpaper';
+    $('wallQr').innerHTML = ''; $('wallTitle').textContent = 'Change Home wallpaper';
     $('wallScan').textContent = 'Loading wallpaper controls…'; window.WALL_URL = '';
     function current() { return generation === wallGeneration && !dismissed && !document.hidden; }
     function fail(message) { if (!current()) return; hideWallpaper(); toast(message); }
@@ -186,7 +186,7 @@
         try {
           var qr = window.qrcode(0, 'M'); qr.addData(url); qr.make();
           $('wallQr').innerHTML = '<img alt="Scan to change Home wallpaper" src="' + qr.createDataURL(8, 0) + '">';
-          $('wallScan').textContent = CONFIG.language === 'vi' ? 'Quét mã này bằng camera điện thoại rồi chọn ảnh.' : 'Scan this code with your phone camera, then pick a photo.';
+          $('wallScan').textContent = 'Scan this code with your phone camera, then pick a photo.';
         } catch (error) { fail('Wallpaper code could not be created. Try again.'); }
       }
       if (typeof window.qrcode === 'function') render(true); else loadScript('qrcode.js', render);
@@ -236,7 +236,7 @@
     var params = parameters();
     lastRequestId = params.overlayRequestId || null;
     nativeOwnerToken = nativeOwner(params);
-    document.documentElement.lang = CONFIG.language === 'vi' ? 'vi' : 'en';
+    document.documentElement.lang = 'en';
     var cancel = isNativeCancel(params);
     if (!cancel) show();
     if (window.PalmSystem && typeof window.PalmSystem.stageReady === 'function') window.PalmSystem.stageReady();

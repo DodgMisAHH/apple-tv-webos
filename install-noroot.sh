@@ -6,7 +6,7 @@
 #
 # It asks for the TV's IP and Developer Mode passphrase the first time, then reads your apps,
 # packages the launcher and installs it. Run it again whenever you add or remove apps.
-# Personal settings (language, columns, weather, wallpaper): edit app/config.js first.
+# Personal settings (columns, weather, wallpaper): edit app/config.js first.
 set -euo pipefail
 cd "$(dirname "$0")"
 APP_ID=com.gathin.tvhome

@@ -58,8 +58,13 @@ s.scope.CONFIG.wallpaper='current.jpg';s.scope.CONFIG.wallpaperFrost='current-fr
 staleLoad();assert(s.els.dockFrost.style.backgroundImage.includes('current-frost.jpg'));assert.equal(s.canvas(),0);
 s.scope.CONFIG.wallpaper='';s.scope.LauncherSettings.apply();staleLoad();
 assert.equal(s.els.dockFrost.style.backgroundImage,'');assert(!s.els.dockBand.classList.contains('frosted'));
-s=setup({wallpaper:'',weather:{enabled:true,latitude:0,longitude:0,place:'Equator'}});s.advance(1500);assert.equal(s.requests.length,1);
-s.visible(false);assert(s.requests[0].aborted);s.advance(100000);assert.equal(s.requests.length,1);
-s.visible(true);s.advance(1500);assert.equal(s.requests.length,2);
-s.scope.CONFIG.weather.enabled=false;s.scope.LauncherSettings.apply();assert(s.requests[1].aborted);assert.equal(s.els.weather.textContent,'');
+s=setup({wallpaper:'',language:'vi',weather:{enabled:true,latitude:0,longitude:0,place:'Equator'}});s.advance(1500);assert.equal(s.requests.length,1);
+s.requests[0].responseText=JSON.stringify({current:{temperature_2m:20,weather_code:2},daily:{temperature_2m_max:[23],temperature_2m_min:[17],precipitation_probability_max:[10]}});
+s.requests[0].onload();
+assert(s.els.weather.textContent.includes('Partly cloudy'), 'Weather descriptions stay English with a legacy language preference');
+s.scope.CONFIG.weather.place='New place';s.scope.LauncherSettings.apply();s.advance(1500);
+assert.equal(s.requests.length,2);
+s.visible(false);assert(s.requests[1].aborted);s.advance(100000);assert.equal(s.requests.length,2);
+s.visible(true);s.advance(1500);assert.equal(s.requests.length,3);
+s.scope.CONFIG.weather.enabled=false;s.scope.LauncherSettings.apply();assert(s.requests[2].aborted);assert.equal(s.els.weather.textContent,'');
 console.log('Hot settings/retry, dedicated frost updates/clear without geometry writes, stale legacy decode isolation and weather suspension passed.');

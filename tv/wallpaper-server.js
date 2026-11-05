@@ -119,8 +119,8 @@ function saveSettings(change, res) {
 }
 
 /** City search on Open-Meteo. curl, because Node 8's certificates are too old for some sites. */
-function findCity(q, lang, cb) {
-  var url = 'https://geocoding-api.open-meteo.com/v1/search?count=6&format=json&language=' + lang +
+function findCity(q, cb) {
+  var url = 'https://geocoding-api.open-meteo.com/v1/search?count=6&format=json&language=en' +
     '&name=' + encodeURIComponent(q);
   execFile('curl', ['-fsSL', '--max-time', '15', url], { timeout: 20000 }, function (err, out) {
     if (err) return cb(err);
@@ -250,7 +250,7 @@ function handle(req, res) {
   if (route === 'GET /api/state') {
     var s = readJSON(SETTINGS, {}), w = s.weather || {};
     return json(res, 200, {
-      language: s.language === 'vi' ? 'vi' : 'en',
+      language: 'en', // Older cached phone pages still read this field.
       hasWallpaper: fs.existsSync(WALLPAPER),
       dim: typeof s.wallpaperDim === 'number' ? s.wallpaperDim : 0.35,
       weather: { enabled: !!(w.enabled && w.latitude), place: w.place || '' }
@@ -260,8 +260,7 @@ function handle(req, res) {
   if (route === 'GET /api/city') {
     var name = String(q.q || '').trim().slice(0, 80);
     if (!name) return json(res, 400, { error: 'empty' });
-    var lang = readJSON(SETTINGS, {}).language === 'vi' ? 'vi' : 'en';
-    return findCity(name, lang, function (err, list) {
+    return findCity(name, function (err, list) {
       if (err) return json(res, 502, { error: 'lookup failed' });
       json(res, 200, { results: list });
     });
@@ -348,10 +347,9 @@ function handle(req, res) {
 }
 
 function page403() {
-  return '<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' +
+  return '<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' +
     '<body style="font:18px system-ui,sans-serif;background:#111;color:#eee;padding:24px">' +
-    '<p>Open this page by scanning the QR code on the TV (Wallpaper button).</p>' +
-    '<p>Hãy mở trang này bằng cách quét mã QR trên TV (nút Hình nền).</p>';
+    '<p>Open this page by scanning the QR code on the TV (Wallpaper button).</p>';
 }
 
 
