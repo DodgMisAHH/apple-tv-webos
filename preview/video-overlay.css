@@ -26,3 +26,8 @@ main > p a { color:#b9d6fa; text-decoration:underline; text-underline-offset:3px
 .note { color:#7f8b9b; max-width:1050px; }
 @media(max-width:680px), (max-height:520px) { .stage { width:100%; } }
 @media(max-width:680px) { main { padding:10px; } .caption { left:15px; bottom:14px; gap:4px; } .toolbar { gap:8px; } #seek { flex-basis:40%; } }
+/* Presentation capture: retain only the film and the real TV interface. */
+.clean-preview,.clean-preview body { height:100%; overflow:hidden; background:#000; }
+.clean-preview main { height:100%; max-width:none; padding:0; display:flex; align-items:center; }
+.clean-preview .stage { width:min(100vw, calc(100vh * 16 / 9)); flex-shrink:0; border:0; border-radius:0; }
+.clean-preview .caption,.clean-preview .toolbar,.clean-preview main > p { display:none; }

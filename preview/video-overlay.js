@@ -1,6 +1,9 @@
 /* Browser-only video host. No TV bridge or native service is emulated. */
 (function () {
   'use strict';
+  if (new URLSearchParams(location.search).get('clean') === '1') {
+    document.documentElement.classList.add('clean-preview');
+  }
   var video = document.getElementById('video'), screen = document.getElementById('screen');
   var stage = document.getElementById('demo-stage');
   var toggle = document.getElementById('toggle'), play = document.getElementById('play');

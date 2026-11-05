@@ -65,29 +65,25 @@ Open **[localhost:4798](http://127.0.0.1:4798)** to play the trailer, seek and s
 
 You can start with Developer Mode. Root adds deeper integration with the TV.
 
-| Feature | Normal LG TV | Developer Mode | Rooted TV + Homebrew |
+| Feature | Normal LG | Developer Mode | Rooted |
 | --- | :---: | :---: | :---: |
-| Open your installed streaming apps | ✅ LG Home | ✅ Same apps | ✅ Same apps |
-| Remote and pointer navigation | ✅ LG interface | ✅ Custom launcher | ✅ Custom launcher |
-| Glass shelf, app grid, Move/Hide | ❌ This design | ✅ | ✅ |
-| Ad-free launcher home | ⚠️ LG promotions vary | ✅ Launcher only | ✅ Launcher only |
-| Custom launcher wallpaper, clock & weather | ❌ This design | ✅ Configure locally | ✅ Local or phone |
-| Change wallpaper/weather from your phone | ❌ | ❌ | ✅ Wallpaper service |
-| Home button opens this launcher | ❌ | ⚠️ Computer workaround¹ | ✅ Input Hook setup |
-| Start this launcher after TV boot | ❌ | ❌ | ✅ Startup setup |
-| App list updates | ✅ LG handles it | ⚠️ Sync & reinstall | ✅ TV-side sync |
-| TV sound, network & settings | ✅ LG controls | ✅ LG controls | ✅ LG + supported panel controls |
-| Floating Settings-button Control Centre | ❌ This panel | ❌ | ✅ Extra setup² |
-| Works without Developer Mode renewal | ✅ | ⚠️ Extend session | ✅ |
-| System-wide ad/tracking blocking included | ❌ | ❌ | ❌ Separate tools |
+| Streaming apps | ✅ | ✅ | ✅ |
+| Remote / pointer | ✅ | ✅ | ✅ |
+| Glass dock + Move/Hide | ❌ | ✅ | ✅ |
+| Ad-free Home¹ | ⚠️ | ✅ | ✅ |
+| Launcher wallpaper & weather² | ❌ | ✅ | ✅ |
+| Phone customization³ | ❌ | ❌ | ✅ |
+| Home-button integration³ | ❌ | ⚠️ | ✅ |
+| Launcher at boot³ | ❌ | ❌ | ✅ |
+| Automatic app sync² | ✅ | ❌ | ✅ |
+| TV sound / network / settings | ✅ | ✅ | ✅ |
+| Floating Control Centre³ | ❌ | ❌ | ✅ |
+| No session renewal² | ✅ | ❌ | ✅ |
+| Bundled ad/tracking blocker¹ | ❌ | ❌ | ❌ |
 
-**The launcher itself has no ads.** LG Home promotions and available settings vary by model/region; some TVs offer a [Home Promotion switch](https://www.lg.com/uk/support/product-support/troubleshoot/help-library/cs-CT00008333-20153529296869/). This launcher does not block ads inside streaming apps or turn off TV-wide tracking. Root alone does neither; any system-wide blocking needs separately reviewed tools and configuration.
-
-¹ `home-watch.py` can watch for LG Home from an always-running computer and reopen the launcher. This is a computer-side workaround; it does not remap Home or install a TV boot hook.
-
-² The global overlay needs its own setup and verification. Wi-Fi joining requires additional scoped permissions; optional VPN controls require a separately configured helper. [Details](docs/SETTINGS-OVERLAY.md) · [VPN setup](docs/VPN-PRESETS.md)
-
-Native **system Home replacement** is a separate advanced integration with exact firmware checks. It is not required to use the launcher and is not enabled by the ordinary setup.
+1. **Ads:** this launcher has none. LG Home promotions vary ([LG's settings](https://www.lg.com/uk/support/product-support/troubleshoot/help-library/cs-CT00008333-20153529296869/)). Streaming-app ads and system-wide tracking are unaffected; root alone does not block them.
+2. **Developer Mode:** configure locally, sync/reinstall after app changes and renew the session. Normal LG keeps its own apps and settings.
+3. **Rooted extras:** require Homebrew and their [individual setup](docs/SETUP.md). Developer Mode's `home-watch.py` workaround needs an always-on computer; it is not native Home/boot integration. Native Home is firmware-specific; Wi-Fi needs scoped permissions and VPN needs a separate helper.
 
 ## Try it on your computer
 

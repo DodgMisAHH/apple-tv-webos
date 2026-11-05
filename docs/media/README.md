@@ -35,7 +35,12 @@ For the video composition, run:
 python3 scripts/preview-video-overlay.py
 ```
 
-Open `http://127.0.0.1:4798`, play the sample and use Show/Hide Control Centre.
+Open [localhost:4798](http://127.0.0.1:4798), play the sample and use Show/Hide
+Control Centre. For a presentation-only screenshot, open
+[localhost:4798/?clean=1](http://127.0.0.1:4798/?clean=1). Clean mode fills the
+viewport with the video and panel, hiding the demo toolbar, captions and notes.
+The normal URL keeps those interactive demo controls and explanations.
+
 This preview serves the actual floating panel with a browser-only lifecycle
 bridge and empty personal settings. The video runs independently beneath it;
 the screenshot does not establish overlay compatibility with TV streaming apps.
