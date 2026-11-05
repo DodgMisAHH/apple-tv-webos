@@ -6,8 +6,9 @@ original working directory or an installed TV. Keep developing either copy;
 port individual source changes after reviewing them. Avoid copying the original
 folder wholesale over this repository.
 
-The GitHub repository is private. Public readiness does not change its visibility.
-No release or device deployment is required to review this source.
+This repository contains the shareable source edition. Personal development files
+remain in the separate local copy. No release or device deployment is required
+to review this source.
 
 ## What is intentionally different
 
