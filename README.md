@@ -65,20 +65,20 @@ Open **[localhost:4798](http://127.0.0.1:4798)** to play the trailer, seek and s
 
 You can start with Developer Mode. Root adds deeper integration with the TV.
 
-| Feature | Normal LG | Developer Mode | Rooted |
+| Feature | Rooted | Developer Mode | Normal LG |
 | --- | :---: | :---: | :---: |
 | Streaming apps | ✅ | ✅ | ✅ |
 | Remote / pointer | ✅ | ✅ | ✅ |
-| Glass dock + Move/Hide | ❌ | ✅ | ✅ |
-| Ad-free Home¹ | ⚠️ | ✅ | ✅ |
-| Launcher wallpaper & weather² | ❌ | ✅ | ✅ |
-| Phone customization³ | ❌ | ❌ | ✅ |
-| Home-button integration³ | ❌ | ⚠️ | ✅ |
-| Launcher at boot³ | ❌ | ❌ | ✅ |
-| Automatic app sync² | ✅ | ❌ | ✅ |
 | TV sound / network / settings | ✅ | ✅ | ✅ |
-| Floating Control Centre³ | ❌ | ❌ | ✅ |
+| Ad-free Home¹ | ✅ | ✅ | ⚠️ |
+| Glass dock + Move/Hide | ✅ | ✅ | ❌ |
+| Launcher wallpaper & weather² | ✅ | ✅ | ❌ |
+| Automatic app sync² | ✅ | ❌ | ✅ |
 | No session renewal² | ✅ | ❌ | ✅ |
+| Launcher Home button³ | ✅ | ⚠️ | ❌ |
+| Phone customization³ | ✅ | ❌ | ❌ |
+| Launcher at boot³ | ✅ | ❌ | ❌ |
+| Floating Control Centre³ | ✅ | ❌ | ❌ |
 | Bundled ad/tracking blocker¹ | ❌ | ❌ | ❌ |
 
 1. **Ads:** this launcher has none. LG Home promotions vary ([LG's settings](https://www.lg.com/uk/support/product-support/troubleshoot/help-library/cs-CT00008333-20153529296869/)). Streaming-app ads and system-wide tracking are unaffected; root alone does not block them.
